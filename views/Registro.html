@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./estilos.css">
+</head>
+
+<body>
+    <!--Fondo dinamico-->
+    <div class="bg_animate"></div>
+    <div class="burbujas">
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+        <div class="burbuja"></div>
+    </div>
+    
+    <div class="createUser">
+        <form id="form" class="formulario">
+
+            <h1>Chat</h1>
+            <div class="contenedor">
+    
+                <div class="input-contenedor-one">
+                    <div>
+                        <span class="material-icons">
+                            person
+                            </span>
+                    </div>
+    
+                    <input type="text" id="user" autocomplete="off" placeholder="Nombre">
+    
+                </div>
+                <div class="input-contenedor-one">
+                    <div>
+                        <span class="material-icons">
+                            email
+                            </span>
+                    </div>
+    
+                    <input type="email" id="email" autocomplete="off" placeholder="Email">
+    
+                </div>
+                <div id="alerta"></div>
+                <div class="input-contenedor-one">
+                    <div>
+                        <span class="material-icons">
+                            lock_open
+                            </span>
+                    </div>
+                    <input type="password" id="password1" autocomplete="off" placeholder="Contraseña">
+    
+                </div>
+                <div class="input-contenedor-one">
+                    <div>
+                        <span class="material-icons">
+                            lock_open
+                            </span>
+                    </div>
+    
+                    <input type="password" id="password2" autocomplete="off" placeholder="Confirmar contraseña">
+    
+                </div>
+                <input type="submit" value="Registrarse" class="button">
+                <p>¿ya tienes una cuenta? <a class="link" href="./iniciar.html">Iniciar sesión </a></p>
+            </div>
+        </form>
+    </div>
+    
+
+</body>
+
+</html>
