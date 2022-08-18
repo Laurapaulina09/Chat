@@ -9,6 +9,16 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// conexion a bd
+const mongoose = require('mongoose');
+const dbName = 'cahtdb';
+const uri = 'mongodb://localhost/chatdb';
+mongoose.connect(uri,{
+
+})
+.then(() => console.log('Base de datos conectada'))
+.catch(e => console.log(e))
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
