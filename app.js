@@ -4,20 +4,21 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./controller/index');
+var usersRouter = require('./controller/users');
 
 var app = express();
 
 // conexion a bd
-const mongoose = require('mongoose');
-const dbName = 'cahtdb';
-const uri = 'mongodb://localhost/chatdb';
+/* const mongoose = require('mongoose');
+const dbName = 'chatdb';
+const uri = 'mongodb://localhost/'
+;
 mongoose.connect(uri,{
 
 })
 .then(() => console.log('Base de datos conectada'))
-.catch(e => console.log(e))
+.catch(e => console.log(e)) */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
