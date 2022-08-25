@@ -10,6 +10,7 @@ class Schemas {
     chatConect=null
     constructor(){
         this.usuarios()
+        this.chats()
     }
     async conectar(){
         await mongoose.connect(uri)
@@ -22,7 +23,7 @@ class Schemas {
         this.usuarioConect = mongoose.model('usuarios', usuario)
     }
     chats(){
-        let chat =new Schema(shema.chats,{collection:'chats'})
+        let chat =new Schema(schema.chats,{collection:'chats'})
         this.chatConect=mongoose.model('chats',chat)
     }
 }

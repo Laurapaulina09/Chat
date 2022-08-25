@@ -8,7 +8,7 @@
     <title>Document</title>
     <!-- CSS only -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="./estilos.css">
+    <link rel="stylesheet" href="/stylesheets/estilos.css">
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                             </span>
                     </div>
     
-                    <input type="email" id="email" autocomplete="off" placeholder="Email">
+                    <input type="email" id="correo" required autocomplete="off" placeholder="Email">
     
                 </div>
                 <div id="alerta"></div>
@@ -50,15 +50,14 @@
                             lock_open
                             </span>
                     </div>
-                    <input type="password" id="password1" autocomplete="off" placeholder="Contraseña">
+                    <input type="password" id="contrasena" required autocomplete="off" placeholder="Contraseña">
                 </div>
                 <input type="submit" value="Iniciar sesión" class="button">
-                <p>¿no tienes una cuenta? <a class="link" href="./Registro.html">Registrarse </a></p>
+                <p>¿no tienes una cuenta? <a class="link" href="./crearUsuario">Registrarse </a></p>
             </div>
         </form>
     </div>
-    
-
+    <script src="/js/iniciar.js"></script>
 </body>
 
 </html>

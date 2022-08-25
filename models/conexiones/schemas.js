@@ -7,13 +7,14 @@ const schema = {
         avatar: 'String'
     },
     chats: {
-        usuario1: 'String',
-        usuario2: 'String',
+        usuarios: 'String',
+        usuario1:'String',
+        usuario2:'String',
         mensajes: [
             {
                 mensaje: 'String',
                 fecha: 'Number',
-                remite: 'String'
+                remitente: 'String'
             }
         ]
     },
