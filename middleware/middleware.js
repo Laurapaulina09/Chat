@@ -2,7 +2,9 @@ const docodeToken = require('./token')
 function verificar(req,res,next){
     let cookie = req.headers.cookie;
     let m=null
+    console.log(req.cookie)
     if (cookie === undefined || cookie.search('access_token') == -1 || cookie.se) {
+        console.log('Indefinido')
         return res.redirect('/users/inicio')
     }else{
         let x =cookie.split('; ')

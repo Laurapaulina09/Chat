@@ -44,12 +44,7 @@ app.set('port', port);
 
 
 var server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:8000",
-    methods: ["GET", "POST"]
-  }
-});
+const io = new Server(server);
 
 
 
@@ -130,7 +125,7 @@ app.get('/consultaMensajes/:usuarios', verificar, (req,res)=>{
 
 
 
-server.listen(process.env.PORT);
+server.listen(process.env.PORT || 3000);
 server.on('error', onError);
 server.on('listening', onListening);
 

@@ -11,6 +11,7 @@ document.getElementById('form').addEventListener('submit', function(e){
         },
         body:JSON.stringify(informacion)
     }).then((resp)=>{
+        console.log(resp)
         return resp.json()
         //location.href='/'
     }).then((resp)=>{
