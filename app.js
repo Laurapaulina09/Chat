@@ -15,6 +15,7 @@ var app = express();
 var bcrypt=require('bcrypt')
 const { body, validationResult } = require('express-validator');
 const token = require('./middleware/token');
+require('dotenv').config()
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -129,7 +130,7 @@ app.get('/consultaMensajes/:usuarios', verificar, (req,res)=>{
 
 
 
-server.listen(port);
+server.listen(process.env.PORT);
 server.on('error', onError);
 server.on('listening', onListening);
 

@@ -1,7 +1,8 @@
 const config= require('./config')
 const mongoose = require('mongoose')
 const schema = require('./schemas')
-const uri = config.url+':'+config.port+'/'+config.db;
+//const uri = config.url+':'+config.port+'/'+config.db;
+const uri = "mongodb+srv://laurapaulina09:laurapaulina1039@cluster0.qribmzb.mongodb.net/?retryWrites=true&w=majority"
 const Schema = mongoose.Schema
 //let usuarioConect;
 
