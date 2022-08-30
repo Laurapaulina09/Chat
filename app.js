@@ -44,9 +44,12 @@ app.set('port', port);
 
 
 var server = http.createServer(app);
-const io = new Server(server);
-
-
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:8000",
+    methods: ["GET", "POST"]
+  }
+});
 
 
 app.get('/', verificar, function(req, res, next) {
@@ -122,7 +125,9 @@ app.get('/consultaMensajes/:usuarios', verificar, (req,res)=>{
   })
 })
 
-
+app.get('/cerrar/:id', (req,res)=>{
+  crud.actualizarEstado(req.params.id, false, ()=> res.send('sesión cerrada'))
+})
 
 
 server.listen(process.env.PORT || 3000);
