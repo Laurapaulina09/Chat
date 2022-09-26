@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -9,27 +9,36 @@
     <!-- CSS only -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/estilos.css">
+    <style>
+        #botones .btn{ 
+            margin-left:15px
+        }
+    </style>
 </head>
 
 <body>
     <!--Fondo dinamico-->
     <div class="bg_animate"></div>
-    
-    <div class="createUser">
+    <div class="createUser" id="createUser">
         <form id="form" class="formulario">
-
             <h1>Chat</h1>
-            <div class="contenedor">
-    
-                <div class="input-contenedor-one">
+            <div id="botones">
+                
+            </div>
+            <div class="contenedor" id="contenedor">
+                
+            </div>
+            </form>
+    </div>
+    <script>
+        let activo="email"
+        let inicioEmail=/*html*/`<div class="input-contenedor-one">
                     <div>
                         <span class="material-icons">
                             email
                             </span>
                     </div>
-    
                     <input type="email" id="correo" required autocomplete="off" placeholder="Email">
-    
                 </div>
                 <div id="alerta"></div>
                 <div class="input-contenedor-one">
@@ -41,11 +50,41 @@
                     <input type="password" id="contrasena" required autocomplete="off" placeholder="Contraseña">
                 </div>
                 <input type="submit" value="Iniciar sesión" class="button">
-                <p>¿no tienes una cuenta? <a class="link" href="/users/crearUsuario">Registrarse </a></p>
-            </div>
-        </form>
-    </div>
+                <p>¿no tienes una cuenta? <a class="link" href="/users/crearUsuario">Registrarse </a></p>`
+
+        let inicioRFID = /*html*/`
+                <div id="alerta"></div>
+                <div class="input-contenedor-one">
+                    <div>
+                        <span class="material-icons">
+                            lock_open
+                            </span>
+                    </div>
+                    <input type="password" id="rfid" required autocomplete="off" placeholder="RFID">
+                </div>
+                <input type="submit" value="Iniciar sesión" class="button">
+                <p>¿no tienes una cuenta? <a class="link" href="/users/crearUsuario">Registrarse </a></p>`
+        
+        let elementoFormulario = document.getElementById('contenedor')
+
+        function iniciarEmail(){
+            activo="email"
+            elementoFormulario.innerHTML=inicioEmail
+            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarRFID()">Iniciar con RFID</div>'
+        }
+
+        function iniciarRFID(){
+            activo="rfid"
+            elementoFormulario.innerHTML=inicioRFID
+            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarEmail()">Iniciar con Email</div>'
+            document.getElementById('rfid').focus()
+        }
+        iniciarEmail()
+    </script>
+
+
     <script src="/js/iniciar.js"></script>
+
 </body>
 
 </html>

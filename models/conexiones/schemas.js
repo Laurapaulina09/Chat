@@ -4,7 +4,8 @@ const schema = {
         correo: 'String',
         contrasena: 'String',
         online: 'Boolean',
-        avatar: 'String'
+        avatar: 'String',
+        rfid:'String'
     },
     chats: {
         usuarios: 'String',
@@ -18,5 +19,14 @@ const schema = {
             }
         ]
     },
+    horario:{
+        usuario:'String',
+        horario:[
+            {
+                isEntrada:'Boolean',
+                fecha:'Number'
+            }
+        ]
+    }
 }
 module.exports = schema

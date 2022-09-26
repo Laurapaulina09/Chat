@@ -9,9 +9,11 @@ const Schema = mongoose.Schema
 class Schemas {
     usuarioConect = null
     chatConect=null
+    horarioConect=null
     constructor(){
         this.usuarios()
         this.chats()
+        this.horario()
     }
     async conectar(){
         await mongoose.connect(uri)
@@ -26,6 +28,10 @@ class Schemas {
     chats(){
         let chat =new Schema(schema.chats,{collection:'chats'})
         this.chatConect=mongoose.model('chats',chat)
+    }
+    horario(){
+        let horario = new Schema(schema.horario, {collection:'horario'})
+        this.horarioConect=mongoose.model('horario', horario)
     }
 }
 

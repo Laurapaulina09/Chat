@@ -1,5 +1,14 @@
 document.getElementById('form').addEventListener('submit', function(e){
+    console.log('Inicio')
     e.preventDefault();
+    if(activo == "email"){
+        sendEmail()
+    }else{
+        sendRFID()
+    }
+})
+
+function sendEmail(){
     let informacion = {
         correo:document.getElementById('correo').value,
         contrasena:document.getElementById('contrasena').value
@@ -20,4 +29,30 @@ document.getElementById('form').addEventListener('submit', function(e){
     }).catch(err=>{
         console.log(err)
     })
-})
+}
+function sendRFID(){
+    let informacion = {
+        rfid:document.getElementById('rfid').value
+    }
+    fetch('/users/inicioRFID', {
+        method:'POST',
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(informacion)
+    }).then(async (resp)=>{
+        console.log(resp)
+        let n = await resp.json()
+        console.log(n)
+        if(resp.status == 200){
+            return n
+        }
+        throw new Error(n.mensaje)
+    }).then((resp)=>{
+        sessionStorage.setItem('id', resp._id)
+        sessionStorage.setItem('rfid', resp.rfid)
+        location.href='/'
+    }).catch(err=>{
+        alert(err)
+    })
+}

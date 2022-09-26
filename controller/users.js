@@ -32,11 +32,13 @@ router.post('/crearUsuario',
       nombre: req.body.nombre,
       contrasena: hash,
       online: false,
-      avatar: req.body.avatar
+      avatar: req.body.avatar,
+      rfid:req.body.rfid
     }
 
     crud.crearUsuario(datosUsuario, (response) => {
-      res.send(response)
+      if(response.status == 'exitoso') return res.send(response)
+      return res.status(404).send(response)
     })
 
   })
@@ -83,7 +85,8 @@ router.post('/crearUsuario',
             _id:data._id,
             nombre:data.nombre,
             correo:data.correo,
-            avatar:data.avatar
+            avatar:data.avatar,
+            rfid:data.rfid
           })
         }
         return res.status(401).send('Usuario no autorizado')
@@ -92,6 +95,43 @@ router.post('/crearUsuario',
 
   })
 
+  router.post('/inicioRFID', (req,res)=>{
+    let rfid = req.body.rfid
+    crud.buscarUsuarioRfid(rfid, (err, data)=>{
+      if (err){
+        return res.status(500).send({
+          mensaje:"Error interno en el servidor, por favor intentelo más tarde"
+        })
+      }
+      if(data==null){
+        console.log('usuarios no encontrado')
+        return res.status(404).send({
+          mensaje:"No se encontró el usuario,por favor registrese"
+        })
+      }
+      let tokenGenerado = token.generar({
+        _id:data._id,
+        nombre:data.nombre,
+        correo:data.correo,
+        avatar:data.avatar
+      })
+      crud.actualizarEstado(data._id, true, (resp)=>{
+        console.log(resp)
+      })
+      return res.cookie('access_token',tokenGenerado,{
+        sameSite: 'strict',
+        path: '/',
+        expires: new Date(Date.now() + (1000 * 3600)),
+        httpOnly: true
+      }).status(200).send({
+        _id:data._id,
+        nombre:data.nombre,
+        correo:data.correo,
+        avatar:data.avatar,
+        rfid:data.rfid
+      })
+    })
+  })
   router.post('/verificaToken', (req,res)=>{
     let verifica =token.decodificar(req.body.token)
     console.log(verifica)

@@ -12,6 +12,7 @@ function registrar(e) {
     informacion.correo = $('#email').value,
     informacion.contrasena = $('#password1').value,
     informacion.contrasena2 = $('#password2').value
+    informacion.rfid = $('#rfid').value
     if (informacion.contrasena != informacion.contrasena2) {
         $('#mensaje').classList.add('mensaje')
         $('#mensaje').innerHTML = '<span>Valida que la contraseña escrita en ambos casos coincida</span>'
@@ -46,16 +47,18 @@ function aceptar(){
         },
         body:JSON.stringify(informacion)
     })
-    .then((resp)=>{
+    .then(async (resp)=>{
         if(resp.status == 200){
             location.href='/users/inicio'
         }
-        return resp.json()
+        let n = await resp.json()
+        throw new Error(n.mensaje)
     })
     .then((resp)=>{
         console.log(resp)
     })
     .catch(err=>{
         alert(err)
+        setTimeout(()=>location.reload(),100)
     })
 }

@@ -8,167 +8,231 @@ const crud = {
                 err ? cb(err) : cb(data)
             })
     },
-    buscarUsuario(correo, cb) {
-        esquema.usuarioConect.findOne({ correo })
+    buscarUsuario(correo, rfid, cb) {
+        esquema.usuarioConect.findOne({
+            $or: [
+                {
+                    correo
+                },
+                {
+                    rfid
+                }
+            ]
+        })
             .exec((err, data) => {
                 cb(err, data)
             })
     },
-    buscarUsuarioId(idUser, cb){
-           esquema.usuarioConect.findOne({ _id:idUser })
-           .exec((err, data) => {
-            if(err){
-                cb(true, false)
-            }
-            cb(false, data)
-        })
+    buscarUsuarioRfid(rfid, cb) {
+        esquema.usuarioConect.findOne({ rfid })
+            .exec((err, data) => {
+                cb(err, data)
+            })
+    },
+    buscarUsuarioId(idUser, cb) {
+        esquema.usuarioConect.findOne({ _id: idUser })
+            .exec((err, data) => {
+                if (err) {
+                    cb(true, false)
+                }
+                cb(false, data)
+            })
     },
     crearUsuario(datosCrear, cb) {
-        this.buscarUsuario(datosCrear.correo, (err, data) => {
+        this.buscarUsuario(datosCrear.correo, datosCrear.rfid, (err, data) => {
             if (err) {
                 cb({
                     status: 'error',
                     mensaje: 'Falló la busqueda del usuario'
                 })
             } else if (data == null) {
-                esquema.usuarioConect.create(datosCrear,(error,res)=>{
-                    if(error){
+                esquema.usuarioConect.create(datosCrear, (error, res) => {
+                    if (error) {
                         cb({
                             status: 'error',
                             mensaje: 'Falló la creación del usuario'
                         })
-                    }else {
+                    } else {
                         cb({
-                            status:'exitoso',
-                            mensaje:res
+                            status: 'exitoso',
+                            mensaje: res
                         })
                     }
-
-
                 })
-
-            }else{
+            } else {
                 cb({
-                    status:'alerta',
-                    mensaje:'El usuario que intenta crear ya existe'
+                    status: 'alerta',
+                    mensaje: 'El usuario que intenta crear ya existe'
                 })
             }
         })
     },
-    actualizarEstado(id, estado, cb){
-        console.log(id)
-        esquema.usuarioConect.updateOne({_id:id}, {$set:{online:estado}})
-        .exec(err=>{
-            if(err){
-                cb({
-                    status:'error',
-                    mensaje:'Fallo la actualizacion'
-                })
-            }else{
-                cb({
-                    status:'exitoso'
-                })
-            }
-        })
-    },
-    agregarMensaje(datosMensaje, cb){
-        let mensaje = {
-            mensaje:datosMensaje.mensaje,
-            remitente:datosMensaje.usuario1,
-            fecha:Date.now(new Date())
+    actualizarHorario(id, estaCreado, estado,  cb){
+        if(estaCreado){
+            esquema.horarioConect.update({usuario:id}, {
+                $push:{
+                    horario:{
+                        $each:[
+                            {
+                                fecha: Date.now(),
+                                isEntrada:estado
+                            }
+                        ]
+                    }
+                }
+            })
+            .exec(err=>{
+                if(!err){
+                    cb()
+                }
+                if(err) console.log('Error creando la actualización')
+
+            })
+        }else{
+            esquema.horarioConect.create({
+                usuario:id,
+                horario:[
+                    {
+                        fecha: Date.now(),
+                        isEntrada:estado
+                    }
+                ]
+            },(err, resp)=>{
+                if(resp) {
+                    console.log(resp)
+                    cb()
+                }else{
+                    console.log(err)
+                }
+            })
         }
-        esquema.chatConect.update({usuarios:datosMensaje.usuarios}, {
-            $push:{
+    },
+    actualizarEstado(id, estado, cb) {
+        console.log(id)
+        esquema.horarioConect.findOne({usuario:id})
+        .exec((err, resp)=>{
+            if(err) return {status:'error', mensaje:'No fue posible iniciar sesion'}
+            estaCreado = resp === null ? false : true
+            this.actualizarHorario(id, estaCreado, estado,()=>{
+                esquema.usuarioConect.updateOne({ _id: id }, { $set: { online: estado } })
+                .exec(err => {
+                    if (err) {
+                        cb({
+                            status: 'error',
+                            mensaje: 'Fallo la actualizacion'
+                        })
+                    } else {
+                        cb({
+                            status: 'exitoso'
+                        })
+                    }
+                })
+            })
+        })
+        
+    },
+    agregarMensaje(datosMensaje, cb) {
+        let mensaje = {
+            mensaje: datosMensaje.mensaje,
+            remitente: datosMensaje.usuario1,
+            fecha: Date.now(new Date())
+        }
+        esquema.chatConect.update({ usuarios: datosMensaje.usuarios }, {
+            $push: {
                 mensajes: {
-                    $each:[
-                       mensaje
+                    $each: [
+                        mensaje
                     ]
                 }
             }
         })
-        .exec(err=>{
-            if(err) cb({
-                status:'error',
-                mensaje:'Fallo la actualizacion'
+            .exec(err => {
+                if (err) cb({
+                    status: 'error',
+                    mensaje: 'Fallo la actualizacion'
+                })
+                cb({
+                    status: 'exitoso',
+                    mensaje: mensaje
+                })
             })
-            cb({
-                status:'exitoso',
-                mensaje:mensaje
-            })
-        })
     },
-    agregarNuevoMensaje(datosMensaje, cb){
+    agregarNuevoMensaje(datosMensaje, cb) {
         esquema.chatConect.create({
-            usuarios: datosMensaje.usuario1+'_'+datosMensaje.usuario2,
+            usuarios: datosMensaje.usuario1 + '_' + datosMensaje.usuario2,
             usuario1: datosMensaje.usuario1,
-            usuario2:datosMensaje.usuario2,
-            mensajes:[
+            usuario2: datosMensaje.usuario2,
+            mensajes: [
                 {
-                    mensaje:datosMensaje.mensaje,
-                    remitente:datosMensaje.usuario1,
-                    fecha:Date.now(new Date())
+                    mensaje: datosMensaje.mensaje,
+                    remitente: datosMensaje.usuario1,
+                    fecha: Date.now(new Date())
                 }
             ]
-        }, (err,res)=>{
-            if(err){
+        }, (err, res) => {
+            if (err) {
                 cb({
                     status: 'error',
                     mensaje: 'Falló la creación del mensaje'
                 })
-            }else {
+            } else {
                 cb({
-                    status:'exitoso',
-                    mensaje:res
+                    status: 'exitoso',
+                    mensaje: res
                 })
             }
         })
     },
-    consultarMensajes(id, cb){
-        esquema.chatConect.find({usuarios:{
-            $regex:id
-        }})
-        .exec((err,data)=>{
-            err ? cb({status:'error', contenido: err}) : cb({status:'exitoso', contenido: data})
-        })
-    },
-    async consultaMensajeUsuario(id, cb){
-        esquema.chatConect.find({usuarios:{
-            $regex:id
-        }})
-        .exec((err,data)=>{
-            if(err){
-                cb(err)
+    consultarMensajes(id, cb) {
+        esquema.chatConect.find({
+            usuarios: {
+                $regex: id
             }
-            let n = data.map(element => {
-                let idUser = element.usuarios.replace(id, '').replace('_','')
-                return {
-                    usuarios:element.usuarios,
-                    usuario:idUser,
-                    mensaje:element.mensajes.pop()
-                }
-            });
-            cb(n)
         })
-    },
-    consultaGeneral(cb){
-        esquema.chatConect.find()
-        .exec((err,data)=>{
-            err ? cb({status:'error', contenido: err}) : cb({status:'exitoso', contenido: data})
-        })
-    },
-    consultarMensajesChatEspecifico(usuarios, cb){
-        esquema.chatConect.find({usuarios})
-        .exec((err,data)=>{
-            if(err){
-                cb({
-                    status:err,
-                })
-            }
-            cb({
-                status:'exitoso',
-                content:data
+            .exec((err, data) => {
+                err ? cb({ status: 'error', contenido: err }) : cb({ status: 'exitoso', contenido: data })
             })
+    },
+    async consultaMensajeUsuario(id, cb) {
+        esquema.chatConect.find({
+            usuarios: {
+                $regex: id
+            }
         })
+            .exec((err, data) => {
+                if (err) {
+                    cb(err)
+                }
+                let n = data.map(element => {
+                    let idUser = element.usuarios.replace(id, '').replace('_', '')
+                    return {
+                        usuarios: element.usuarios,
+                        usuario: idUser,
+                        mensaje: element.mensajes.pop()
+                    }
+                });
+                cb(n)
+            })
+    },
+    consultaGeneral(cb) {
+        esquema.chatConect.find()
+            .exec((err, data) => {
+                err ? cb({ status: 'error', contenido: err }) : cb({ status: 'exitoso', contenido: data })
+            })
+    },
+    consultarMensajesChatEspecifico(usuarios, cb) {
+        esquema.chatConect.find({ usuarios })
+            .exec((err, data) => {
+                if (err) {
+                    cb({
+                        status: err,
+                    })
+                }
+                cb({
+                    status: 'exitoso',
+                    content: data
+                })
+            })
     }
 }
 module.exports = crud
