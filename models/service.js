@@ -233,6 +233,21 @@ const crud = {
                     content: data
                 })
             })
+    },
+    traerHoras(cb){
+        esquema.horarioConect.find()
+        .exec((err,resp)=>{
+            if(err){
+                cb({
+                    status:'error'
+                })
+            }else{
+                cb({
+                    estatus:'exitoso',
+                    data:resp
+                })
+            }            
+        })
     }
 }
 module.exports = crud

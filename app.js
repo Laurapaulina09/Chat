@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./controller/index');
 var usersRouter = require('./controller/users');
+const apiRouter = require('./controller/api')
 const cors = require('cors')
 const verificar = require('./middleware/middleware');
 var http = require('http');
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/users', verificar, usersRouter);
 //app.use('/',verificar,indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', apiRouter)
 //app.use('/',indexRouter);
 
 var port = normalizePort(process.env.PORT || '3000');
