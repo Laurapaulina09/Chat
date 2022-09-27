@@ -58,7 +58,7 @@ function aceptar(){
         console.log(resp)
     })
     .catch(err=>{
-        alert(err)
+        console.log(err)
         setTimeout(()=>location.reload(),100)
     })
 }
