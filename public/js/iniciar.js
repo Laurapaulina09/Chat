@@ -30,9 +30,15 @@ function sendEmail(){
         console.log(err)
     })
 }
-function sendRFID(){
-    let informacion = {
-        rfid:document.getElementById('rfid').value
+function sendRFID(data=""){
+    if(data==""){
+        let informacion = {
+            rfid:document.getElementById('rfid').value
+        }
+    }else{
+        let informacion = {
+            rfid:data
+        }
     }
     fetch('/users/inicioRFID', {
         method:'POST',

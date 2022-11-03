@@ -337,10 +337,11 @@ p {
     line-height: 40px;
     font-size: 18px;
     border-radius: 10px;
-    max-width: 150px;
     text-align: center;
     margin: 15px auto;
     user-select: none;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .disabled{
     background-color: rgba(216, 215, 215, 0.777) !important;

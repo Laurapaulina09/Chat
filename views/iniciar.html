@@ -10,8 +10,25 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/stylesheets/estilos.css">
     <style>
+        #botones{
+            display: flex;
+        }
         #botones .btn{ 
             margin-left:15px
+        }
+        #facial{
+            display: none;
+        }
+        .facial{
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            z-index: 2;
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -29,6 +46,17 @@
                 
             </div>
             </form>
+    </div>
+    <div id="facial">
+       
+        <div style="position: absolute;">
+            <video id="video" src=""></video>
+            <div style="display: flex; justify-content: center;">
+                <input id="usuarioFace" type="text" placeholder="Usuario">
+                <div class="btn" id="enviarFace" style="margin: 0px; margin-left:5px">Enviar</div>
+            </div>
+        </div> 
+        <canvas id="captura" width="680" height="480"></canvas>
     </div>
     <script>
         let activo="email"
@@ -70,13 +98,13 @@
         function iniciarEmail(){
             activo="email"
             elementoFormulario.innerHTML=inicioEmail
-            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarRFID()">Iniciar con RFID</div>'
+            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarRFID()">Iniciar con RFID</div><div class="btn" onclick="iniciarFacial()">Reconocimiento facial</div>'
         }
 
         function iniciarRFID(){
             activo="rfid"
             elementoFormulario.innerHTML=inicioRFID
-            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarEmail()">Iniciar con Email</div>'
+            document.getElementById('botones').innerHTML='<div class="btn" onclick="iniciarEmail()">Iniciar con Email</div><div class="btn" onclick="iniciarFacial()">Reconocimiento facial</div>'
             document.getElementById('rfid').focus()
         }
         iniciarEmail()
@@ -84,6 +112,8 @@
 
 
     <script src="/js/iniciar.js"></script>
+    <script src="/js/facial.js"></script>
+
 
 </body>
 
